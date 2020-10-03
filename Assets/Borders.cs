@@ -5,21 +5,15 @@ using UnityEngine;
 public class Borders : MonoBehaviour
 {
 
-    public GameObject U, D, L, R;
     public GameObject circle;
     public float shrinkRatio = 1f;
     public float shrinkTime = 20f;
     public float startDiameter = 4f;
 
-    Vector3 initU, initD, initL, initR;
 
     // Start is called before the first frame update
     void Start()
     {
-        initU = U.transform.position;
-        initD = D.transform.position;
-        initL = L.transform.position;
-        initR = R.transform.position;
     }
 
     // Update is called once per frame

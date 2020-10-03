@@ -7,12 +7,13 @@ public class Weapon : MonoBehaviour
     Borders borders;
     PlayerController player;
     public bool attached { get; private set; } = true;
-    bool hasWrapped;
+    int wrapCount;
 
     public Vector3 velocity;
     private Vector3 dampVelocity;
 
-    public float speed;
+    public float initialSpeed;
+    public float maxSpeed;
 
     // Start is called before the first frame update
     void Start()
@@ -26,13 +27,24 @@ public class Weapon : MonoBehaviour
     {
         if (!attached)
         {
+
+            if (wrapCount >= 2)
+            {
+                var targetVelocity = (player.transform.position - transform.position).normalized * initialSpeed;
+                velocity = Vector3.SmoothDamp(velocity, targetVelocity, ref dampVelocity, 0.3f);
+            }
+            else
+            {
+                var targetVelocity = velocity.normalized * maxSpeed;
+                velocity = Vector3.SmoothDamp(velocity, targetVelocity, ref dampVelocity, 2f);
+            }
             transform.position += velocity * Time.deltaTime;
             if (borders.shouldWrap(transform.position))
             {
                 transform.position = borders.wrappedPosition(transform.position);
-                hasWrapped = true;
+                wrapCount += 1;
             }
-            velocity = Vector3.SmoothDamp(velocity, Vector3.zero, ref dampVelocity, 2f);
+
         }
         else
         {
@@ -44,8 +56,9 @@ public class Weapon : MonoBehaviour
     public void Fire(Vector3 direction)
     {
         attached = false;
-        hasWrapped = false;
-        velocity = direction.normalized * speed; 
+        wrapCount = 0;
+        velocity = direction.normalized * initialSpeed;
+        dampVelocity = Vector3.zero;
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -54,7 +67,7 @@ public class Weapon : MonoBehaviour
         
         if (col.gameObject.GetComponent<PlayerController>() != null)
         {
-            if (hasWrapped)
+            if (wrapCount > 0)
             {
                 attached = true;
             }

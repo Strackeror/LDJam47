@@ -9,13 +9,13 @@ public class EnemySpawner : MonoBehaviour
     public EnemyBehavior enemy;
     public int lastFrameCreation = 0;
 
+    Borders borders;
+
     void Start()
     {
-        //EnemyBehavior en1 = Instantiate(enemy, Vector3.zero, Quaternion.identity);
-        //Instantiate(enemy, new Vector3(-1f, -1f, 1f), new Quaternion());
-        /*var en1 = GameObject.Instantiate(enemy, transform.position + (transform.right * 10), Quaternion.identity);
-        Debug.Log(en1);*/
+        borders = FindObjectOfType<Borders>();
         createEnemy();
+       
     }
 
     // Update is called once per frame
@@ -32,7 +32,8 @@ public class EnemySpawner : MonoBehaviour
     void createEnemy()
     {
         Debug.Log("Ennemy Created !");
-        var clone = GameObject.Instantiate(enemy, new Vector3(0f,-3f,0f), Quaternion.identity);
+        var pos = new Vector3(Random.value - 0.5f, Random.value - 0.5f).normalized * borders.Diameter() / 2;
+        var clone = GameObject.Instantiate(enemy, pos, Quaternion.identity);
         clone.gameObject.SetActive(true);
     }
 }
