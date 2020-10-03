@@ -42,13 +42,7 @@ public class Borders : MonoBehaviour
     public Vector3 wrappedPosition(Vector3 pos)
     {
         var diameter = startDiameter * shrinkRatio;
-        var invertedFromOrigin = (pos.normalized * -1 * (diameter - pos.magnitude));
-        Debug.DrawLine(pos, invertedFromOrigin);
-        if (invertedFromOrigin.magnitude < diameter / 2)
-        {
-            return invertedFromOrigin;
-        }
-        return pos;
+        return pos.normalized * -1 * (diameter - pos.magnitude);
     }
 
     public float Diameter()

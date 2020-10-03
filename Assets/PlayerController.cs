@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         var input = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
-        Vector3 velocity = input.normalized * 10f;
+        Vector3 velocity = input.normalized * 5f;
 
         var target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         target.z = 0;
@@ -24,13 +24,14 @@ public class PlayerController : MonoBehaviour
         transform.position += velocity * Time.deltaTime;
         transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
 
-        transform.position = borders.wrappedPosition(transform.position);
-
-        if (Input.GetMouseButtonDown(1) && projectile.isAttached())
+        if (borders.shouldWrap(transform.position))
         {
-            Debug.LogError("FIRE");
-            projectile.velocity = (target - transform.position).normalized * 7;
-            projectile.attached = null;
+            transform.position = borders.wrappedPosition(transform.position);
+        }
+
+        if (Input.GetMouseButtonDown(1) && projectile.attached)
+        {
+            projectile.Fire(target - transform.position);
         }
       }
 }
