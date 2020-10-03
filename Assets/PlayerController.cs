@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour
 {
     public Borders borders;
     public Weapon projectile;
+
+    public float chargeTime = 0.5f;
+    float currentChargedTime = 0f;
     // Start is called before the first frame update
     void Start()
     {

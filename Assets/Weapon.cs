@@ -33,11 +33,6 @@ public class Weapon : MonoBehaviour
                 hasWrapped = true;
             }
             velocity = Vector3.SmoothDamp(velocity, Vector3.zero, ref dampVelocity, 2f);
-
-            if ((player.transform.position - transform.position).magnitude < 0.05 && hasWrapped)
-            {
-                attached = true;
-            }
         }
         else
         {
@@ -51,5 +46,23 @@ public class Weapon : MonoBehaviour
         attached = false;
         hasWrapped = false;
         velocity = direction.normalized * speed; 
+    }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        Debug.Log("Projectile collider hit");
+        
+        if (col.gameObject.GetComponent<PlayerController>() != null)
+        {
+            if (hasWrapped)
+            {
+                attached = true;
+            }
+        }
+
+        if (col.gameObject.GetComponent<EnemyBehavior>() != null)
+        {
+            col.gameObject.SetActive(false);
+        }
     }
 }
