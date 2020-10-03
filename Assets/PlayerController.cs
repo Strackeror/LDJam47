@@ -24,18 +24,46 @@ public class PlayerController : MonoBehaviour
 
         var target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         target.z = 0;
-        var rot_z = Mathf.Atan2(target.y - transform.position.y, target.x - transform.position.x) * Mathf.Rad2Deg;
-        transform.position += velocity * Time.deltaTime;
-        transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
+
 
         if (borders.shouldWrap(transform.position))
         {
             transform.position = borders.wrappedPosition(transform.position);
         }
 
-        if (Input.GetMouseButtonDown(1) && projectile.attached)
+        if (Input.GetMouseButton(0) && projectile.attached)
         {
-            projectile.Fire(target - transform.position);
+            currentChargedTime += Time.deltaTime;
+            if (currentChargedTime > chargeTime)
+            {
+                currentChargedTime = chargeTime;
+                projectile.Fire(target - transform.position);
+            }
+            velocity *= 1 - (currentChargedTime / chargeTime);
         }
-      }
+        else
+        {
+            currentChargedTime = 0f;
+        }
+
+        if (!projectile.attached)
+        {
+            velocity = Vector3.zero;
+        }
+
+
+
+        transform.position += velocity * Time.deltaTime;
+
+        var rot_z = Mathf.Atan2(target.y - transform.position.y, target.x - transform.position.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
+    }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.GetComponent<EnemyBehavior>())
+        {
+            this.gameObject.SetActive(false);
+        }
+    }
 }

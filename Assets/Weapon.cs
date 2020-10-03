@@ -62,7 +62,10 @@ public class Weapon : MonoBehaviour
 
         if (col.gameObject.GetComponent<EnemyBehavior>() != null)
         {
-            col.gameObject.SetActive(false);
+            if (!attached)
+            {
+                col.gameObject.SetActive(false);
+            }
         }
     }
 }
