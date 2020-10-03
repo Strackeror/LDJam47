@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public Borders borders;
+    public Weapon projectile;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,28 +19,18 @@ public class PlayerController : MonoBehaviour
         Vector3 velocity = input.normalized * 10f;
 
         var target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Debug.LogError(Input.mousePosition);
+        target.z = 0;
         var rot_z = Mathf.Atan2(target.y - transform.position.y, target.x - transform.position.x) * Mathf.Rad2Deg;
         transform.position += velocity * Time.deltaTime;
         transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
 
-        var (begin, end) = borders.AvailableTerrain();
-        var size = end - begin;
+        transform.position = borders.wrappedPosition(transform.position);
 
-        var pos = transform.position;
-        var points = new[] {
-            pos + new Vector3(size.x, 0),
-            pos - new Vector3(size.x, 0),
-            pos + new Vector3(0, size.y),
-            pos - new Vector3(0, size.y),
-        };
-        foreach (var npos in points)
+        if (Input.GetMouseButtonDown(1) && projectile.isAttached())
         {
-            if (npos.x > begin.x && npos.y > begin.y && npos.x < end.x && npos.y < end.y)
-            {
-                transform.position = npos;
-                break;
-            }
+            Debug.LogError("FIRE");
+            projectile.velocity = (target - transform.position).normalized * 7;
+            projectile.attached = null;
         }
-    }
+      }
 }

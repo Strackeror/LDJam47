@@ -6,7 +6,10 @@ public class Borders : MonoBehaviour
 {
 
     public GameObject U, D, L, R;
-    public float shrink_ratio = 0f;
+    public GameObject circle;
+    public float shrinkRatio = 1f;
+    public float shrinkTime = 20f;
+    public float startDiameter = 4f;
 
     Vector3 initU, initD, initL, initR;
 
@@ -22,15 +25,34 @@ public class Borders : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        shrink_ratio += Time.deltaTime * 0.125f;
-        U.transform.position = initU + new Vector3(0, -2) * (shrink_ratio);
-        D.transform.position = initD + new Vector3(0, 2) * (shrink_ratio);
-        L.transform.position = initL + new Vector3(2, 0) * (shrink_ratio);
-        R.transform.position = initR + new Vector3(-2, 0) * (shrink_ratio);
+        shrinkRatio -= Time.deltaTime / shrinkTime;
+        if (shrinkRatio < 0.25f)
+        {
+            shrinkRatio = 0.25f;
+        }
+        circle.transform.localScale = Vector2.one * shrinkRatio;
     }
 
-    public (Vector3, Vector3) AvailableTerrain()
+    public bool shouldWrap(Vector3 pos)
     {
-        return (new Vector3(-2, -2) * (1 - shrink_ratio), new Vector3(2, 2) * (1 - shrink_ratio));
+        var diameter = startDiameter * shrinkRatio;
+        return pos.magnitude > diameter / 2;
+    }
+
+    public Vector3 wrappedPosition(Vector3 pos)
+    {
+        var diameter = startDiameter * shrinkRatio;
+        var invertedFromOrigin = (pos.normalized * -1 * (diameter - pos.magnitude));
+        Debug.DrawLine(pos, invertedFromOrigin);
+        if (invertedFromOrigin.magnitude < diameter / 2)
+        {
+            return invertedFromOrigin;
+        }
+        return pos;
+    }
+
+    public float Diameter()
+    {
+        return 4 * shrinkRatio;
     }
 }
