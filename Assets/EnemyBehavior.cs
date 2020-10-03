@@ -12,15 +12,12 @@ public class EnemyBehavior : MonoBehaviour
     void Start()
     {
         target = GameObject.FindObjectOfType<PlayerController>().transform;
-        Debug.Log(target);
     }
 
     // Update is called once per frame
     void Update()
     {
         transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-        Debug.Log("Enemy coord: " + transform.position);
-        Debug.Log("Player coord: " + target.position);
         var targetPos = target.position;
         var thisPos = transform.position;
         targetPos.x = targetPos.x - thisPos.x;
