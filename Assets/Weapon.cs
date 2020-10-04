@@ -45,6 +45,11 @@ public class Weapon : MonoBehaviour
                 wrapCount += 1;
             }
 
+            /*
+            var rot_z = Vector2.Angle(velocity, Vector2.right);
+            transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
+            */
+
         }
         else
         {
@@ -70,6 +75,7 @@ public class Weapon : MonoBehaviour
             if (wrapCount > 0)
             {
                 attached = true;
+                player.chargeExplosion.Play();
             }
         }
 
@@ -77,7 +83,7 @@ public class Weapon : MonoBehaviour
         {
             if (!attached)
             {
-                col.gameObject.SetActive(false);
+                col.gameObject.GetComponent<EnemyBehavior>().Kill();
             }
         }
     }

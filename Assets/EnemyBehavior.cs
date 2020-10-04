@@ -8,16 +8,34 @@ public class EnemyBehavior : MonoBehaviour
 
     private Transform target;
 
+    bool killed = false;
+    float killTime = 0f;
+
     // Start is called before the first frame update
     void Start()
     {
         target = GameObject.FindObjectOfType<PlayerController>()?.transform;
     }
 
+    public void Kill() {
+        this.GetComponent<CircleCollider2D>().enabled = false;
+        killed = true;
+        killTime = Time.time;
+        FindObjectOfType<Borders>().reverseTime += 0.5f;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (target)
+        if (killed) {
+            var sprite = GetComponentInChildren<SpriteRenderer>();
+            sprite.color = Color.Lerp(sprite.color, Color.clear, (Time.time - killTime) / 1.0f);
+
+            if (Time.time - killTime > 1.0f)  {
+                gameObject.SetActive(false);
+            }
+        }
+        else if (target)
         {
             transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
             var targetPos = target.position;
@@ -27,5 +45,7 @@ public class EnemyBehavior : MonoBehaviour
             var angle = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
         }
+
+        
     }
 }

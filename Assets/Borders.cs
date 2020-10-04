@@ -10,6 +10,8 @@ public class Borders : MonoBehaviour
     public float shrinkTime = 20f;
     public float startDiameter = 4f;
 
+    public float reverseTime = 0f;
+
 
     // Start is called before the first frame update
     void Start()
@@ -19,10 +21,16 @@ public class Borders : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        shrinkRatio -= Time.deltaTime / shrinkTime;
-        if (shrinkRatio < 0.25f)
+        if (reverseTime > 0f) {
+            shrinkRatio += Time.deltaTime / shrinkTime;
+            reverseTime -= Time.deltaTime;
+        } else {
+            shrinkRatio -= Time.deltaTime / shrinkTime;
+        }
+
+        if (shrinkRatio < 0.05f)
         {
-            shrinkRatio = 0.25f;
+            shrinkRatio = 0.05f;
         }
         circle.transform.localScale = Vector2.one * shrinkRatio;
     }

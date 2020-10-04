@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         var input = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
-        Vector3 velocity = input.normalized * 5f;
+        Vector3 velocity = input.normalized * 2f;
 
         var target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         target.z = 0;
@@ -29,7 +29,9 @@ public class PlayerController : MonoBehaviour
 
         if (borders.shouldWrap(transform.position))
         {
-            transform.position = borders.wrappedPosition(transform.position);
+            if (velocity.magnitude > 0f) {
+                transform.position = borders.wrappedPosition(transform.position);
+            }
         }
 
 
@@ -48,31 +50,30 @@ public class PlayerController : MonoBehaviour
             {
                 if (currentChargedTime - Time.deltaTime < chargeTime) {
                     chargeExplosion.Play();
+                    heavyRun.Play();
                 }
-                heavyRun.gameObject.SetActive(true);
             }
 
-            velocity *= 1 - (Mathf.Clamp(currentChargedTime, 0f, chargeTime) / chargeTime);
+            velocity *= 1 - 0.5f * (Mathf.Clamp(currentChargedTime, 0f, chargeTime) / chargeTime);
         }
         else
         {
             if (projectile.attached) {
-                heavyRun.gameObject.SetActive(false);
+                heavyRun.Stop();
             }
             currentChargedTime = 0f;
         }
 
 
-        if (!projectile.attached)
+        if (projectile.attached)
         {
-            velocity = Vector3.zero;
+            var rot_z = Mathf.Atan2(target.y - transform.position.y, target.x - transform.position.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
+            transform.position += velocity * Time.deltaTime;
         }
 
         lightRun.gameObject.SetActive(velocity.magnitude > 0.1);
 
-        var rot_z = Mathf.Atan2(target.y - transform.position.y, target.x - transform.position.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
-        transform.position += velocity * Time.deltaTime;
     }
 
     void OnTriggerEnter2D(Collider2D col)
