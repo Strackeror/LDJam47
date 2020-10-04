@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class EnemyBehavior : MonoBehaviour
 {
-    public float speed=0.5f;
+    public float speed = 0.5f;
+    public float value = 0.5f;
 
     private Transform target;
 
@@ -48,7 +49,7 @@ public class EnemyBehavior : MonoBehaviour
         explode.Play();
         killed = true;
         killTime = Time.time;
-        FindObjectOfType<Borders>().reverseTime += 0.5f;
+        FindObjectOfType<Borders>().reverseTime += value;
         GetComponent<AudioSource>().clip = explosionSound;
         GetComponent<AudioSource>().Play();
     }

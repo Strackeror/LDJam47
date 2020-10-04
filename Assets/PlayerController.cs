@@ -56,6 +56,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        var sprite = GetComponentInChildren<SpriteRenderer>();
         if (Input.GetMouseButton(0) && projectile.attached)
         {
             currentChargedTime += Time.deltaTime;
@@ -67,8 +68,9 @@ public class PlayerController : MonoBehaviour
                     heavyRun.Play();
                 }
             }
-
             velocity *= 1 - 0.5f * (Mathf.Clamp(currentChargedTime, 0f, chargeTime) / chargeTime);
+
+            sprite.color = Color.Lerp(Color.white, Color.red,  currentChargedTime / chargeTime); 
         }
         else
         {
@@ -76,6 +78,7 @@ public class PlayerController : MonoBehaviour
                 heavyRun.Stop();
             }
             currentChargedTime = 0f;
+            sprite.color = Color.white;
         }
 
 
@@ -86,20 +89,29 @@ public class PlayerController : MonoBehaviour
             transform.position += velocity * Time.deltaTime;
         }
 
+        if (borders.Diameter() < 0.5) {
+            Kill();
+        }
+
         lightRun.gameObject.SetActive(velocity.magnitude > 0.1);
 
+    }
+
+    void Kill()
+    {
+        deathExplosion.Play();
+        deathExplosionSound.Play();
+        GetComponent<Collider2D>().enabled = false;
+        GetComponentInChildren<SpriteRenderer>().gameObject.SetActive(false);
+        enabled = false;
+        projectile.gameObject.SetActive(false);
     }
 
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.GetComponent<EnemyBehavior>())
         {
-            deathExplosion.Play();
-            deathExplosionSound.Play();
-            GetComponent<Collider2D>().enabled = false;
-            GetComponentInChildren<SpriteRenderer>().gameObject.SetActive(false);
-            enabled = false;
-            projectile.gameObject.SetActive(false);
+            Kill();
         }
     }
 }

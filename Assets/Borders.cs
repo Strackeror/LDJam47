@@ -28,10 +28,9 @@ public class Borders : MonoBehaviour
             shrinkRatio -= Time.deltaTime / shrinkTime;
         }
 
-        if (shrinkRatio < 0.05f)
-        {
-            shrinkRatio = 0.05f;
-        }
+        shrinkRatio = Mathf.Clamp(shrinkRatio, 0.05f, 1f);
+        reverseTime = Mathf.Min(reverseTime, 5f);
+
         circle.transform.localScale = Vector2.one * shrinkRatio;
         var rot_z = Mathf.Repeat(Time.time, shrinkTime);
         circle.transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
