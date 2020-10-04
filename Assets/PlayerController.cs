@@ -10,7 +10,8 @@ public class PlayerController : MonoBehaviour
 
     public float chargeTime = 0.5f;
     float currentChargedTime = 0f;
-    // Start is called before the first frame update
+    public ParticleSystem lightRun, heavyRun, chargeExplosion;
+
     void Start()
     {
         Debug.Log("Player coords: " + transform.position);
@@ -31,32 +32,47 @@ public class PlayerController : MonoBehaviour
             transform.position = borders.wrappedPosition(transform.position);
         }
 
+
+        if (Input.GetMouseButtonUp(0)) {
+            Debug.Log(("MouseUP", projectile.attached, currentChargedTime));
+            if (projectile.attached && currentChargedTime >= chargeTime)
+            {
+                projectile.Fire(target - transform.position);
+            }
+        }
+
         if (Input.GetMouseButton(0) && projectile.attached)
         {
             currentChargedTime += Time.deltaTime;
             if (currentChargedTime > chargeTime)
             {
-                currentChargedTime = chargeTime;
-                projectile.Fire(target - transform.position);
+                if (currentChargedTime - Time.deltaTime < chargeTime) {
+                    chargeExplosion.Play();
+                }
+                heavyRun.gameObject.SetActive(true);
             }
-            velocity *= 1 - (currentChargedTime / chargeTime);
+
+            velocity *= 1 - (Mathf.Clamp(currentChargedTime, 0f, chargeTime) / chargeTime);
         }
         else
         {
+            if (projectile.attached) {
+                heavyRun.gameObject.SetActive(false);
+            }
             currentChargedTime = 0f;
         }
+
 
         if (!projectile.attached)
         {
             velocity = Vector3.zero;
         }
 
-
-
-        transform.position += velocity * Time.deltaTime;
+        lightRun.gameObject.SetActive(velocity.magnitude > 0.1);
 
         var rot_z = Mathf.Atan2(target.y - transform.position.y, target.x - transform.position.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
+        transform.position += velocity * Time.deltaTime;
     }
 
     void OnTriggerEnter2D(Collider2D col)
