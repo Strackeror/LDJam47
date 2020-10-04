@@ -16,6 +16,8 @@ public class Weapon : MonoBehaviour
     public float initialSpeed;
     public float maxSpeed;
 
+    private int scoreBonus = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -76,6 +78,7 @@ public class Weapon : MonoBehaviour
             if (wrapCount > 0)
             {
                 attached = true;
+                scoreBonus = 0;
                 player.chargeExplosion.Play();
                 player.pickup.Play();
             }
@@ -86,7 +89,8 @@ public class Weapon : MonoBehaviour
             if (!attached)
             {
                 col.gameObject.GetComponent<EnemyBehavior>().Kill();
-                Score.scoreValue += 100;
+                Score.scoreValue += (100 + scoreBonus*50);
+                scoreBonus += 1;
             }
         }
     }

@@ -21,6 +21,7 @@ public class Borders : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (EndGame.isGameOver) return;
         if (reverseTime > 0f) {
             shrinkRatio += Time.deltaTime / shrinkTime;
             reverseTime -= Time.deltaTime;

@@ -57,7 +57,7 @@ public class EnemyBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (EndGame.isGameOver) return;
 
         if (spawnTime > 0f) {
             spawnTime -= Time.deltaTime;

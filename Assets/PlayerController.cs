@@ -105,6 +105,7 @@ public class PlayerController : MonoBehaviour
         GetComponentInChildren<SpriteRenderer>().gameObject.SetActive(false);
         enabled = false;
         projectile.gameObject.SetActive(false);
+        EndGame.GameOver();
     }
 
     void OnTriggerEnter2D(Collider2D col)
