@@ -76,6 +76,7 @@ public class Weapon : MonoBehaviour
             {
                 attached = true;
                 player.chargeExplosion.Play();
+                player.pickup.Play();
             }
         }
 

@@ -11,6 +11,12 @@ public class EnemyBehavior : MonoBehaviour
     bool killed = false;
     float killTime = 0f;
 
+    [Header("Particles")]
+    public ParticleSystem explode;
+
+    [Header("Sounds")]
+    public AudioClip explosionSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,9 +25,12 @@ public class EnemyBehavior : MonoBehaviour
 
     public void Kill() {
         this.GetComponent<CircleCollider2D>().enabled = false;
+        explode.Play();
         killed = true;
         killTime = Time.time;
         FindObjectOfType<Borders>().reverseTime += 0.5f;
+        GetComponent<AudioSource>().clip = explosionSound;
+        GetComponent<AudioSource>().Play();
     }
 
     // Update is called once per frame
@@ -32,7 +41,7 @@ public class EnemyBehavior : MonoBehaviour
             sprite.color = Color.Lerp(sprite.color, Color.clear, (Time.time - killTime) / 1.0f);
 
             if (Time.time - killTime > 1.0f)  {
-                gameObject.SetActive(false);
+                Destroy(gameObject);
             }
         }
         else if (target)

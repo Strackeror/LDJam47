@@ -10,7 +10,19 @@ public class PlayerController : MonoBehaviour
 
     public float chargeTime = 0.5f;
     float currentChargedTime = 0f;
-    public ParticleSystem lightRun, heavyRun, chargeExplosion;
+
+    [Header("Particles")]
+    public ParticleSystem lightRun;
+    public ParticleSystem heavyRun;
+    public ParticleSystem chargeExplosion;
+
+    public ParticleSystem deathExplosion;
+
+    [Header("Sounds")]
+    public AudioSource fire1;
+    public AudioSource pickup;
+    public AudioSource charged;
+    public AudioSource deathExplosionSound;
 
     void Start()
     {
@@ -39,6 +51,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log(("MouseUP", projectile.attached, currentChargedTime));
             if (projectile.attached && currentChargedTime >= chargeTime)
             {
+                fire1.Play();
                 projectile.Fire(target - transform.position);
             }
         }
@@ -49,6 +62,7 @@ public class PlayerController : MonoBehaviour
             if (currentChargedTime > chargeTime)
             {
                 if (currentChargedTime - Time.deltaTime < chargeTime) {
+                    charged.Play();
                     chargeExplosion.Play();
                     heavyRun.Play();
                 }
@@ -80,7 +94,12 @@ public class PlayerController : MonoBehaviour
     {
         if (col.GetComponent<EnemyBehavior>())
         {
-            this.gameObject.SetActive(false);
+            deathExplosion.Play();
+            deathExplosionSound.Play();
+            GetComponent<Collider2D>().enabled = false;
+            GetComponentInChildren<SpriteRenderer>().gameObject.SetActive(false);
+            enabled = false;
+            projectile.gameObject.SetActive(false);
         }
     }
 }

@@ -33,6 +33,9 @@ public class Borders : MonoBehaviour
             shrinkRatio = 0.05f;
         }
         circle.transform.localScale = Vector2.one * shrinkRatio;
+        var rot_z = Mathf.Repeat(Time.time, shrinkTime);
+        circle.transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
+
     }
 
     public bool shouldWrap(Vector3 pos)
