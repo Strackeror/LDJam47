@@ -22,7 +22,7 @@ public class EnemySpawner : MonoBehaviour
     void Update()
     {
         int cpt = (int)System.Math.Truncate(Time.time);
-        if (cpt == lastFrameCreation + 3 && cpt != lastFrameCreation)
+        if (cpt == lastFrameCreation + 2 && cpt != lastFrameCreation && !EndGame.isGameOver)
         {
             lastFrameCreation = cpt;
             createEnemy();

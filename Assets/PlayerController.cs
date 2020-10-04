@@ -100,6 +100,7 @@ public class PlayerController : MonoBehaviour
             GetComponentInChildren<SpriteRenderer>().gameObject.SetActive(false);
             enabled = false;
             projectile.gameObject.SetActive(false);
+            EndGame.GameOver();
         }
     }
 }

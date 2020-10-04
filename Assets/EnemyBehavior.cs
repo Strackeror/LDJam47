@@ -44,7 +44,7 @@ public class EnemyBehavior : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-        else if (target)
+        else if (target && !EndGame.isGameOver)
         {
             transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
             var targetPos = target.position;
