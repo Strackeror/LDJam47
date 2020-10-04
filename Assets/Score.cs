@@ -7,6 +7,7 @@ public class Score : MonoBehaviour
 {
 
     public static int scoreValue = 0;
+    public static int killCount = 0;
     Text scoreT;
 
     // Start is called before the first frame update

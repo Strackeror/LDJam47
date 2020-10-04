@@ -4866,7 +4866,7 @@ MonoBehaviour:
   value: 0.5
   type: 1
   speed: 0.5
-  straightSpeed: 2
+  straightSpeed: 1
 --- !u!58 &2104199846763113960
 CircleCollider2D:
   m_ObjectHideFlags: 0

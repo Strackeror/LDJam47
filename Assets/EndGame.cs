@@ -25,6 +25,7 @@ public class EndGame : MonoBehaviour
             {
                 isGameOver = false;
                 Score.scoreValue = 0;
+                Score.killCount = 0;
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
