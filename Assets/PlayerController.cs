@@ -53,6 +53,7 @@ public class PlayerController : MonoBehaviour
             {
                 fire1.Play();
                 projectile.Fire(target - transform.position);
+                FindObjectOfType<ScreenShake>().Shake(0.15f, 0.03f);
             }
         }
 
@@ -66,6 +67,7 @@ public class PlayerController : MonoBehaviour
                     charged.Play();
                     chargeExplosion.Play();
                     heavyRun.Play();
+                    FindObjectOfType<ScreenShake>().Shake(0.1f, 0.01f);
                 }
             }
             velocity *= 1 - 0.5f * (Mathf.Clamp(currentChargedTime, 0f, chargeTime) / chargeTime);

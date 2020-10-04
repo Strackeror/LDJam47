@@ -81,6 +81,7 @@ public class Weapon : MonoBehaviour
                 scoreBonus = 0;
                 player.chargeExplosion.Play();
                 player.pickup.Play();
+                FindObjectOfType<ScreenShake>().Shake(0.1f, 0.01f);
             }
         }
 

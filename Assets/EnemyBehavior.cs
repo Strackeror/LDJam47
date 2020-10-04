@@ -45,6 +45,7 @@ public class EnemyBehavior : MonoBehaviour
         if (spawnTime > 0f) {
             return;
         }
+        FindObjectOfType<ScreenShake>().Shake(0.1f, 0.01f);
         this.GetComponent<CircleCollider2D>().enabled = false;
         explode.Play();
         killed = true;
