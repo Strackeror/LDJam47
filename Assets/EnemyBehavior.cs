@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class EnemyBehavior : MonoBehaviour
 {
-    public float speed = 0.5f;
-    public float value = 0.5f;
-
     private Transform target;
 
     float spawnTime = 2.0f;
@@ -21,13 +18,40 @@ public class EnemyBehavior : MonoBehaviour
     [Header("Sounds")]
     public AudioClip explosionSound;
 
+    public enum AIType {
+        Follow,
+        Straight,
+
+    }
+    public float value;
+
+    [Header("AI")]
+    public AIType type;
+
+    [Header("AI : Follow")]
+
+    public float speed;
+
+    [Header("AI : Straight")]
+    public float straightSpeed = 2f;
+    Vector2 velocity;
+
     // Start is called before the first frame update
     void Start()
     {
         target = GameObject.FindObjectOfType<PlayerController>()?.transform;
-
-        TurnToTarget(Vector3.zero);
         spawnWarning.Play();
+
+        switch(type) {
+            case AIType.Follow:
+                TurnToTarget(Vector3.zero);
+                break;
+            case AIType.Straight:
+                velocity = (target.transform.position - transform.position).normalized * straightSpeed;
+                TurnToTarget(target.transform.position);
+                break;
+        }
+
     }
 
     void TurnToTarget(Vector3 pos) {
@@ -62,23 +86,36 @@ public class EnemyBehavior : MonoBehaviour
 
         if (spawnTime > 0f) {
             spawnTime -= Time.deltaTime;
+            return;
         }
-        else
-        {
-            var sprite = GetComponentInChildren<SpriteRenderer>();
-            spawnWarning.Stop();
-            if (killed) {
-                sprite.color = Color.Lerp(sprite.color, Color.clear, (Time.time - killTime) / 1.0f);
-                if (Time.time - killTime > 1.0f)
-                {
-                    Destroy(gameObject);
-                }
+
+        var sprite = GetComponentInChildren<SpriteRenderer>();
+        spawnWarning.Stop();
+        if (killed) {
+            sprite.color = Color.Lerp(sprite.color, Color.clear, (Time.time - killTime) / 1.0f);
+            if (Time.time - killTime > 1.0f)
+            {
+                Destroy(gameObject);
             }
-            else {
-                sprite.enabled = true;
+            return;
+        }
+
+        sprite.enabled = true;
+        switch (type)
+        {
+            case AIType.Follow:
                 transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
                 TurnToTarget(target.position);
-            }
+                break;
+            case AIType.Straight:
+                transform.position += (Vector3) velocity * Time.deltaTime;
+                var borders = FindObjectOfType<Borders>();
+                if (borders.shouldWrap(transform.position)) {
+                    transform.position = borders.wrappedPosition(transform.position);
+                }
+
+                break;
+
         }
     }
 }

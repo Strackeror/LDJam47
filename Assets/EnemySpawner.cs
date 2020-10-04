@@ -6,7 +6,7 @@ public class EnemySpawner : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    public EnemyBehavior enemy;
+    public EnemyBehavior[] enemyTypes;
 
     public float nextSpawn = 5f;
     float spawnTime = 0f;
@@ -30,15 +30,13 @@ public class EnemySpawner : MonoBehaviour
             var maxCount = 2;
             if (Score.scoreValue > 1000) {
                 maxTime = 3f;
-                maxCount = 3;
             }
-
             if (Score.scoreValue > 2000) {
-                maxTime = 2f;
+                maxCount = 3;
             }
             var count = Random.Range(1, maxCount);
             for (int i = 0; i < count; ++i) {
-                createEnemy(nextSpawn / count);
+                createEnemy(nextSpawn / count / 2);
             }
 
             nextSpawn = Random.Range(.5f, maxTime);
@@ -50,6 +48,7 @@ public class EnemySpawner : MonoBehaviour
     {
         var pos = new Vector3(Random.value - 0.5f, Random.value - 0.5f).normalized * borders.Diameter() / 2;
         
+        var enemy = enemyTypes[Random.Range(0, enemyTypes.Length)];
         var clone = GameObject.Instantiate(enemy, pos, Quaternion.identity);
         clone.GetComponent<EnemyBehavior>().value = value;
         clone.gameObject.SetActive(true);
