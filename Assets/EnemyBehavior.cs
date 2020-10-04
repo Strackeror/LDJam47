@@ -8,11 +8,14 @@ public class EnemyBehavior : MonoBehaviour
 
     private Transform target;
 
+    float spawnTime = 2.0f;
+
     bool killed = false;
     float killTime = 0f;
 
     [Header("Particles")]
     public ParticleSystem explode;
+    public ParticleSystem spawnWarning;
 
     [Header("Sounds")]
     public AudioClip explosionSound;
@@ -21,9 +24,26 @@ public class EnemyBehavior : MonoBehaviour
     void Start()
     {
         target = GameObject.FindObjectOfType<PlayerController>()?.transform;
+
+        TurnToTarget(Vector3.zero);
+        spawnWarning.Play();
+    }
+
+    void TurnToTarget(Vector3 pos) {
+        var targetPos = pos;
+        var thisPos = transform.position;
+        targetPos.x = targetPos.x - thisPos.x;
+        targetPos.y = targetPos.y - thisPos.y;
+        if (targetPos.magnitude > 0) {
+            var angle = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        }
     }
 
     public void Kill() {
+        if (spawnTime > 0f) {
+            return;
+        }
         this.GetComponent<CircleCollider2D>().enabled = false;
         explode.Play();
         killed = true;
@@ -36,25 +56,27 @@ public class EnemyBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (killed) {
-            var sprite = GetComponentInChildren<SpriteRenderer>();
-            sprite.color = Color.Lerp(sprite.color, Color.clear, (Time.time - killTime) / 1.0f);
 
-            if (Time.time - killTime > 1.0f)  {
-                Destroy(gameObject);
+
+        if (spawnTime > 0f) {
+            spawnTime -= Time.deltaTime;
+        }
+        else
+        {
+            var sprite = GetComponentInChildren<SpriteRenderer>();
+            spawnWarning.Stop();
+            if (killed) {
+                sprite.color = Color.Lerp(sprite.color, Color.clear, (Time.time - killTime) / 1.0f);
+                if (Time.time - killTime > 1.0f)
+                {
+                    Destroy(gameObject);
+                }
+            }
+            else {
+                sprite.enabled = true;
+                transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+                TurnToTarget(target.position);
             }
         }
-        else if (target)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-            var targetPos = target.position;
-            var thisPos = transform.position;
-            targetPos.x = targetPos.x - thisPos.x;
-            targetPos.y = targetPos.y - thisPos.y;
-            var angle = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-        }
-
-        
     }
 }
