@@ -34,7 +34,7 @@ public class Weapon : MonoBehaviour
             if (wrapCount >= 2)
             {
                 var targetVelocity = (player.transform.position - transform.position).normalized * initialSpeed;
-                velocity = Vector3.SmoothDamp(velocity, targetVelocity, ref dampVelocity, 0.3f);
+                velocity = Vector3.SmoothDamp(velocity, targetVelocity, ref dampVelocity, 3f);
             }
             else
             {
@@ -44,8 +44,12 @@ public class Weapon : MonoBehaviour
             transform.position += velocity * Time.deltaTime;
             if (borders.shouldWrap(transform.position))
             {
+                player.heavyRun.Stop();
+                player.lightRun.Stop();
                 transform.position = borders.wrappedPosition(transform.position);
                 wrapCount += 1;
+                player.heavyRun.Play();
+                player.lightRun.Play();
             }
 
             /*
@@ -81,6 +85,7 @@ public class Weapon : MonoBehaviour
                 scoreBonus = 0;
                 player.chargeExplosion.Play();
                 player.pickup.Play();
+                player.heavyRun.Stop();
                 FindObjectOfType<ScreenShake>().Shake(0.1f, 0.01f);
             }
         }

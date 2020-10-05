@@ -83,9 +83,11 @@ public class EnemyBehavior : MonoBehaviour
     void Update()
     {
         if (EndGame.isGameOver) return;
+    var borders = FindObjectOfType<Borders>();
 
         if (spawnTime > 0f) {
             spawnTime -= Time.deltaTime;
+            transform.position = transform.position.normalized * borders.Diameter() / 2;
             return;
         }
 
@@ -109,7 +111,6 @@ public class EnemyBehavior : MonoBehaviour
                 break;
             case AIType.Straight:
                 transform.position += (Vector3) velocity * Time.deltaTime;
-                var borders = FindObjectOfType<Borders>();
                 if (borders.shouldWrap(transform.position)) {
                     transform.position = borders.wrappedPosition(transform.position);
                 }
