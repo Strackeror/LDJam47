@@ -105,7 +105,7 @@ public class EnemyBehavior : MonoBehaviour
 
         if (spawnTime > 0f) {
             spawnTime -= Time.deltaTime;
-            transform.position = transform.position.normalized * borders.Diameter() / 2;
+            transform.position = transform.position.normalized * borders.Diameter() / 2.02f;
             return;
         }
 

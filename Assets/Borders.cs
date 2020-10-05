@@ -33,7 +33,7 @@ public class Borders : MonoBehaviour
         reverseTime = Mathf.Min(reverseTime, 5f);
 
         circle.transform.localScale = Vector2.one * shrinkRatio;
-        var rot_z = Mathf.Repeat(Time.time, shrinkTime);
+        var rot_z = Time.time;
         circle.transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
 
     }
