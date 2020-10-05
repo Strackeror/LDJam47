@@ -62,8 +62,8 @@ public class PlayerController : MonoBehaviour
             {
                 fire1.Play();
 
-                projectile.initialSpeed = Mathf.Lerp(0.5f, 6f, projectilePower);
-                projectile.maxSpeed = Mathf.Lerp(6f, 15f, projectilePower);
+                projectile.initialSpeed = Mathf.Lerp(1.5f, 6f, projectilePower);
+                projectile.maxSpeed = Mathf.Lerp(4f, 8f, projectilePower);
                 projectile.Fire(target - transform.position);
                 FindObjectOfType<ScreenShake>().Shake(0.15f, 0.03f);
             }
