@@ -7,9 +7,12 @@ public class EnemySpawner : MonoBehaviour
     // Start is called before the first frame update
 
     public EnemyBehavior[] enemyTypes;
+    public EnemyBehavior boss;
 
     public float nextSpawn = 5f;
     float spawnTime = 0f;
+
+    float bossSpawnTime = 0f;
 
     Borders borders;
 
@@ -51,6 +54,16 @@ public class EnemySpawner : MonoBehaviour
             nextSpawn = Random.Range(currentSpawnTable.timeMin, currentSpawnTable.timeMax);
             spawnTime = 0f;
         }
+
+        if (Score.scoreValue >= 5000) {
+            if (bossSpawnTime <= 0f) {
+                var pos = new Vector3(Random.value - 0.5f, Random.value - 0.5f).normalized * borders.Diameter() / 2;
+                GameObject.Instantiate(boss, pos, Quaternion.identity);
+                bossSpawnTime = 30f;
+            }
+            bossSpawnTime -= Time.deltaTime;
+        }
+
     }
 
     void createEnemy(float value)

@@ -25924,6 +25924,7 @@ MonoBehaviour:
   - {fileID: 2104199846763113967, guid: ed9dd575b1d4ea344beb180b561305b8, type: 3}
   - {fileID: 7672615144811225174, guid: 06335b54e1720bb47af449e51700d675, type: 3}
   - {fileID: 7672615144811225174, guid: 06335b54e1720bb47af449e51700d675, type: 3}
+  boss: {fileID: 814819840763688221, guid: 34851d8b5193a78469fe492a4ac6e64c, type: 3}
   nextSpawn: 5
 --- !u!1 &1900312509
 GameObject:

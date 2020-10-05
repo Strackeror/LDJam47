@@ -6,7 +6,8 @@ public class EnemyBehavior : MonoBehaviour
 {
     private Transform target;
 
-    float spawnTime = 2.0f;
+    public float spawnTime = 2.0f;
+    public float disappearTime = 1.0f;
 
     bool killed = false;
     float killTime = 0f;
@@ -24,6 +25,7 @@ public class EnemyBehavior : MonoBehaviour
 
     }
     public float value;
+    public int scoreValue = 100;
 
     [Header("AI")]
     public AIType type;
@@ -36,8 +38,10 @@ public class EnemyBehavior : MonoBehaviour
     [Header("AI : Straight")]
     public float straightSpeed = 2f;
 
-    Vector2 velocity;
+    public Vector2 velocity;
     Vector2 smoothVelocity;
+
+    EnemyBehavior[] children = {};
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +49,9 @@ public class EnemyBehavior : MonoBehaviour
         target = GameObject.FindObjectOfType<PlayerController>()?.transform;
         spawnWarning.Play();
 
+        children = GetComponentsInChildren<EnemyBehavior>(true);
+
+        if (velocity.magnitude != 0) return;
         switch(type) {
             case AIType.Follow:
                 velocity = (target.transform.position - transform.position).normalized * speed;
@@ -81,13 +88,20 @@ public class EnemyBehavior : MonoBehaviour
         FindObjectOfType<Borders>().reverseTime += value;
         GetComponent<AudioSource>().clip = explosionSound;
         GetComponent<AudioSource>().Play();
+        foreach (var enemy in children) {
+            if (enemy == this) continue;
+            enemy.spawnTime = 0.0f;
+            enemy.transform.SetParent(transform.parent);
+            enemy.velocity = (enemy.transform.position - transform.position).normalized * 1.0f;
+            enemy.gameObject.SetActive(true);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         if (EndGame.isGameOver) return;
-    var borders = FindObjectOfType<Borders>();
+        var borders = FindObjectOfType<Borders>();
 
         if (spawnTime > 0f) {
             spawnTime -= Time.deltaTime;
@@ -98,8 +112,8 @@ public class EnemyBehavior : MonoBehaviour
         var sprite = GetComponentInChildren<SpriteRenderer>();
         spawnWarning.Stop();
         if (killed) {
-            sprite.color = Color.Lerp(sprite.color, Color.clear, (Time.time - killTime) / 1.0f);
-            if (Time.time - killTime > 1.0f)
+            sprite.color = Color.Lerp(Color.white, Color.clear, (Time.time - killTime) / 0.1f);
+            if (Time.time - killTime > disappearTime) 
             {
                 Destroy(gameObject);
             }

@@ -94,8 +94,10 @@ public class Weapon : MonoBehaviour
         {
             if (!attached)
             {
-                col.gameObject.GetComponent<EnemyBehavior>().Kill();
-                Score.scoreValue += (100 + scoreBonus*50);
+                var enemy = col.gameObject.GetComponent<EnemyBehavior>();
+                if (enemy.spawnTime > 0f) return;
+                enemy.Kill();
+                Score.scoreValue += (enemy.scoreValue + scoreBonus*50);
                 Score.killCount++;
                 scoreBonus += 1;
             }

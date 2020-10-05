@@ -27,6 +27,9 @@ public class PlayerController : MonoBehaviour
     public AudioSource charged;
     public AudioSource deathExplosionSound;
 
+    Vector3 velocity;
+    Vector3 smoothVelocity;
+
     void Start()
     {
         Debug.Log("Player coords: " + transform.position);
@@ -36,7 +39,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         var input = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
-        Vector3 velocity = input.normalized * 2f;
+        Vector3 targetVelocity = input.normalized * 2f;
+    
+        Debug.DrawRay(transform.position, targetVelocity);
 
         var target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         target.z = 0;
@@ -44,7 +49,7 @@ public class PlayerController : MonoBehaviour
 
         if (borders.shouldWrap(transform.position))
         {
-            if (velocity.magnitude > 0f || Input.GetMouseButtonUp(0))
+            if (targetVelocity.magnitude > 0f || Input.GetMouseButtonUp(0))
             {
                 heavyRun.Stop();
                 lightRun.Stop();
@@ -75,7 +80,7 @@ public class PlayerController : MonoBehaviour
             sprite.color = Color.Lerp(Color.white, new Color(1f, 0.5f, 0f), currentChargedTime / minChargeTime);
 
             currentChargedTime += Time.deltaTime;
-            velocity = Vector2.Lerp(velocity, velocity * 0.5f, currentChargedTime / minChargeTime);
+            targetVelocity = Vector2.Lerp(targetVelocity, targetVelocity * 0.5f, currentChargedTime / minChargeTime);
             if (currentChargedTime > minChargeTime)
             {
                 if (currentChargedTime - Time.deltaTime < minChargeTime)
@@ -99,7 +104,7 @@ public class PlayerController : MonoBehaviour
                     sprite.color = Color.Lerp(new Color(1f, 0.5f, 0f), Color.red, projectilePower);
                 }
 
-                velocity = Vector2.Lerp(velocity, velocity * 0.2f, projectilePower);
+                targetVelocity = Vector2.Lerp(targetVelocity, targetVelocity * 0.5f, projectilePower);
             }
 
 
@@ -110,6 +115,8 @@ public class PlayerController : MonoBehaviour
             currentChargedTime = 0f;
             sprite.color = Color.white;
         }
+
+        velocity = Vector3.SmoothDamp(velocity, targetVelocity, ref smoothVelocity, 0.040f);
 
         if (projectile.attached) {
             var rot_z = Mathf.Atan2(target.y - transform.position.y, target.x - transform.position.x) * Mathf.Rad2Deg;
