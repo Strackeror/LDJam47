@@ -194,7 +194,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -89627743
-  m_SortingLayer: -1
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_RenderMode: 0
   m_SortMode: 0
@@ -5063,8 +5063,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -89627743
-  m_SortingLayer: -1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_RenderMode: 0
   m_SortMode: 0
@@ -10418,7 +10418,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -89627743
+  m_SortingLayerID: -2017406307
   m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e0d2cecb665a3184b826195903da3d99, type: 3}
@@ -10846,7 +10846,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1441098321
+  m_SortingLayerID: -1597473385
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 47602a7ce404e0c40b64c01270583ba9, type: 3}
@@ -10931,7 +10931,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -89627743
-  m_SortingLayer: -1
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_RenderMode: 0
   m_SortMode: 0
@@ -15851,8 +15851,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -89627743
-  m_SortingLayer: -1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_RenderMode: 0
   m_SortMode: 0
@@ -20755,7 +20755,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1441098321
+  m_SortingLayerID: -1597473385
   m_SortingLayer: 1
   m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 2ec3219d60d06fc4eacdb058a8456f93, type: 3}
@@ -20859,7 +20859,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 1441098321
+  m_SortingLayerID: -1597473385
   m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!224 &1786301505
@@ -21019,7 +21019,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d2eae45987496541ac94666ba407ddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 7672615144811225174, guid: 06335b54e1720bb47af449e51700d675, type: 3}
+  enemyTypes:
+  - {fileID: 7672615144811225174, guid: 06335b54e1720bb47af449e51700d675, type: 3}
+  - {fileID: 7672615144811225174, guid: 06335b54e1720bb47af449e51700d675, type: 3}
+  - {fileID: 2104199846763113967, guid: ed9dd575b1d4ea344beb180b561305b8, type: 3}
   nextSpawn: 5
 --- !u!1 &1900312509
 GameObject:

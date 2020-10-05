@@ -3,8 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - scoreText
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -37,14 +36,14 @@ TagManager:
   - 
   - 
   - 
-  - Text
+  - 
   m_SortingLayers:
   - name: Background
-    uniqueID: 4205339553
+    uniqueID: 2277560989
     locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
   - name: Foreground
-    uniqueID: 1441098321
+    uniqueID: 2697493911
     locked: 0
