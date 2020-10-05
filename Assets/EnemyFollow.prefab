@@ -4785,7 +4785,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -89627743
-  m_SortingLayer: -1
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_RenderMode: 0
   m_SortMode: 0
@@ -9597,7 +9597,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -89627743
-  m_SortingLayer: -1
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_RenderMode: 0
   m_SortMode: 0
@@ -9637,7 +9637,7 @@ GameObject:
   - component: {fileID: 7672615144811225175}
   - component: {fileID: 7672615144811225168}
   m_Layer: 0
-  m_Name: Enemy Object
+  m_Name: EnemyFollow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9672,11 +9672,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84cdd95c5568f9942bd78a85941b711a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
-  value: 0.5
   explode: {fileID: 7672615144468493732}
   spawnWarning: {fileID: 5682895411940882034}
   explosionSound: {fileID: 8300000, guid: 5733cc359b80616439215555f25cf4a5, type: 3}
+  value: 0.5
+  type: 0
+  speed: 0.5
+  turnSpeed: 1
+  straightSpeed: 2
 --- !u!58 &7672615144811225175
 CircleCollider2D:
   m_ObjectHideFlags: 0

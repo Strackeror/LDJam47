@@ -31,10 +31,13 @@ public class EnemyBehavior : MonoBehaviour
     [Header("AI : Follow")]
 
     public float speed;
+    public float turnSpeed;
 
     [Header("AI : Straight")]
     public float straightSpeed = 2f;
+
     Vector2 velocity;
+    Vector2 smoothVelocity;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +47,7 @@ public class EnemyBehavior : MonoBehaviour
 
         switch(type) {
             case AIType.Follow:
+                velocity = (target.transform.position - transform.position).normalized * speed;
                 TurnToTarget(Vector3.zero);
                 break;
             case AIType.Straight:
@@ -106,17 +110,17 @@ public class EnemyBehavior : MonoBehaviour
         switch (type)
         {
             case AIType.Follow:
-                transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-                TurnToTarget(target.position);
+                var targetVelocity = (target.position - transform.position).normalized * speed;
+                velocity = Vector2.SmoothDamp(velocity, targetVelocity, ref smoothVelocity, 1f, turnSpeed);
+                TurnToTarget(transform.position + (Vector3) velocity);
                 break;
             case AIType.Straight:
-                transform.position += (Vector3) velocity * Time.deltaTime;
                 if (borders.shouldWrap(transform.position)) {
                     transform.position = borders.wrappedPosition(transform.position);
                 }
-
                 break;
 
         }
+        transform.position += (Vector3) velocity * Time.deltaTime;
     }
 }

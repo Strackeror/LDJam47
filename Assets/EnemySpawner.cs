@@ -22,10 +22,10 @@ public class EnemySpawner : MonoBehaviour
 
     public (int startCount, int countMin, int countMax, float timeMin, float timeMax)[] spawnTable = {
         (0, 1, 1, 3f, 3f),
-        (2, 1, 2, 3f, 3f),
-        (10, 1, 2, 2f, 3f),
-        (20, 1, 3, 2f, 3f),
-        (30, 2, 3, 2f, 3f),
+        (5, 1, 2, 3f, 3f),
+        (15, 1, 2, 2f, 3f),
+        (30, 1, 3, 2f, 3f),
+        (40, 2, 3, 2f, 3f),
         (50, 2, 3, 1f, 2f),
         (100, 3, 3, 1f, 2f)
     };
